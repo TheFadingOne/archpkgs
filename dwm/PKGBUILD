@@ -1,0 +1,54 @@
+# This is an example PKGBUILD file. Use this as a start to creating your own,
+# and remove these comments. For more information, see 'man PKGBUILD'.
+# NOTE: Please fill out the license field for your package! If it is unknown,
+# then please put 'unknown'.
+
+# Maintainer: Your Name <youremail@domain.com>
+pkgname=dwm
+pkgver=6.2
+pkgrel=1
+epoch=
+pkgdesc="A very not sucking window manager"
+arch=('x86_64')
+url="https://dl.suckless.org/"
+license=('MIT')
+groups=()
+depends=('libx11' 'dmenu' 'xfce4-terminal' 'i3lock')
+# makedepends=()
+# checkdepends=()
+# optdepends=()
+# provides=()
+# conflicts=()
+# replaces=()
+# backup=()
+# options=()
+install=
+changelog=
+
+if [[ -f config.h ]]; then
+	source=("${url}$pkgname/$pkgname-$pkgver.tar.gz"
+		"./config.h")
+	sha256sums=('97902e2e007aaeaa3c6e3bed1f81785b817b7413947f1db1d3b62b8da4cd110e'
+		SKIP)
+else
+	source=("${url}$pkgname/$pkgname-$pkgver.tar.gz")
+	sha256sums=('97902e2e007aaeaa3c6e3bed1f81785b817b7413947f1db1d3b62b8da4cd110e')
+fi
+
+validpgpkeys=()
+
+prepare() {
+	if [[ -f config.h ]]; then
+		cp config.h "$srcdir/$pkgname-$pkgver/config.h"
+	fi
+}
+
+build() {
+	cd "$srcdir/$pkgname-$pkgver"
+	make
+}
+
+package() {
+	cd "$srcdir/$pkgname-$pkgver"
+	make PREFIX="/usr" DESTDIR="$pkgdir/" install
+}
