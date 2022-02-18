@@ -25,30 +25,24 @@ depends=('libx11' 'dmenu' 'xfce4-terminal' 'i3lock')
 install=
 changelog=
 
-if [[ -f config.h ]]; then
-	source=("${url}$pkgname/$pkgname-$pkgver.tar.gz"
-		"./config.h")
-	sha256sums=('97902e2e007aaeaa3c6e3bed1f81785b817b7413947f1db1d3b62b8da4cd110e'
-		SKIP)
-else
-	source=("${url}$pkgname/$pkgname-$pkgver.tar.gz")
-	sha256sums=('97902e2e007aaeaa3c6e3bed1f81785b817b7413947f1db1d3b62b8da4cd110e')
-fi
+source=("${url}$pkgname/$pkgname-$pkgver.tar.gz"
+	"./dwm.patch")
+sha256sums=('97902e2e007aaeaa3c6e3bed1f81785b817b7413947f1db1d3b62b8da4cd110e'
+	'd58f798cfad0f602ebf90550e22b5ccc6e79f6d925c41d901726b4073814d3bd')
 
 validpgpkeys=()
 
 prepare() {
-	if [[ -f config.h ]]; then
-		cp config.h "$srcdir/$pkgname-$pkgver/config.h"
-	fi
+	cd "${srcdir}/$pkgname-$pkgver"
+	patch --forward --strip=1 --input="${srcdir}/dwm.patch"
 }
 
 build() {
-	cd "$srcdir/$pkgname-$pkgver"
+	cd "${srcdir}/$pkgname-$pkgver"
 	make
 }
 
 package() {
-	cd "$srcdir/$pkgname-$pkgver"
+	cd "${srcdir}/$pkgname-$pkgver"
 	make PREFIX="/usr" DESTDIR="$pkgdir/" install
 }

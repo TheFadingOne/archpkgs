@@ -1,5 +1,6 @@
---- config.def.h	2019-02-02 13:55:28.000000000 +0100
-+++ config.def.h.new	2021-11-23 23:21:23.372223844 +0100
+diff --unified --recursive --text package.orig/config.def.h package.new/config.def.h
+--- package.orig/config.def.h	2022-02-18 13:49:25.984825135 +0100
++++ package.new/config.def.h	2022-02-18 13:51:52.175243261 +0100
 @@ -57,12 +57,14 @@
  /* commands */
  static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
